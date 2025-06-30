@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KomikKita - Baca Komik Online</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      getDocs
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIZA...",
+      authDomain: "komik-kita-d3d7b.firebaseapp.com",
+      projectId: "komik-kita-d3d7b",
+      storageBucket: "komik-kita-d3d7b.appspot.com",
+      messagingSenderId: "716576061034",
+      appId: "1:71657...",
+      measurementId: "G-..."
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function loadKomik() {
+      const grid = document.querySelector(".komik-grid");
+      grid.innerHTML = "";
+
+      const ref = collection(db, "komik");
+      const snap = await getDocs(ref);
+
+      snap.forEach(doc => {
+        const data = doc.data();
+        const id = doc.id;
+        const lastChapterId = data.lastChapterId || "";
+        const lastChapterName = data.lastChapter || "Chapter Terbaru";
+
+        const card = document.createElement("div");
+        card.className = "komik-card";
+
+        card.innerHTML = `
+          <a href="komik.html?komik=${id}">
+            <img src="${data.cover}" alt="${data.judul}">
+          </a>
+          <div class="komik-title">
+            <a href="komik.html?komik=${id}&chapter=${lastChapterId}" style="color: white; text-decoration: none;">
+              ${data.judul}
+            </a>
+          </div>
+          <div class="chapter-list">
+            <a href="baca.html?komik=${id}&chapter=${lastChapterId}">${lastChapterName}</a>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+    }
+
+    loadKomik();
+  </script>
+  <style>
+    :root {
+      --biru-utama: #3db5ff;
+      --biru-muda: #d7efff;
+      --hitam: #111;
+      --putih: #fff;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: var(--hitam);
+      color: var(--putih);
+    }
+
+    /* HEADER */
+    .header-navbar {
+      background-color: var(--biru-utama);
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo img {
+      height: 40px;
+    }
+
+    .menu a {
+      color: var(--putih);
+      margin-left: 20px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .menu a:hover {
+      text-decoration: underline;
+    }
+
+    .sub-menu {
+      background: var(--putih);
+      color: #333;
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      font-weight: bold;
+    }
+
+    .sub-menu a {
+      color: #333;
+      text-decoration: none;
+    }
+
+    .sub-menu a:hover {
+      text-decoration: underline;
+    }
+
+    /* UPDATE */
+    .update-section {
+      padding: 20px;
+    }
+
+    .update-title {
+      color: var(--biru-utama);
+      font-weight: bold;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .komik-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 20px;
+    }
+
+    .komik-card {
+      background: #1e1e1e;
+      padding: 10px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .komik-card img {
+      width: 100%;
+      border-radius: 6px;
+    }
+
+    .komik-title {
+      font-size: 14px;
+      font-weight: bold;
+      color: var(--putih);
+      margin: 10px 0 5px;
+    }
+
+    .chapter-list {
+      font-size: 12px;
+    }
+
+    .chapter-list a {
+      background: var(--biru-utama);
+      color: white;
+      padding: 2px 6px;
+      margin: 2px;
+      display: inline-block;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 12px;
+    }
+
+    .chapter-list a:hover {
+      background: #1da4ff;
+    }
+
+    /* FOOTER */
+    footer {
+      background-color: #2a2a2a;
+      color: #ccc;
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+    }
+
+    footer a {
+      color: #ccc;
+      margin: 0 10px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    footer a:hover {
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="header-navbar">
+    <div class="logo">
+      <img src="img/logoku.png" alt="KomikKita">
+    </div>
+    <nav class="menu">
+      <a href="#">Home</a>
+      <a href="#">Komik</a>
+      <a href="#">Novel</a>
+      <a href="#">Blog</a>
+      <a href="#">Pasang Iklan</a>
+    </nav>
+  </header>
+
+  <!-- SUB MENU -->
+  <div class="sub-menu">
+    <a href="#">PASANG IKLAN</a>
+    <a href="#">DONASI</a>
+    <a href="#">DISCORD</a>
+    <a href="#">SHOUJO</a>
+    <a href="#">SHOUNEN</a>
+    <a href="#">MANGA</a>
+    <a href="#">MANHUA</a>
+    <a href="#">MANHWA</a>
+  </div>
+
+  <!-- UPDATE -->
+  <section class="update-section">
+    <div class="update-title">PROJECT UPDATE</div>
+    <div class="komik-grid"></div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div>
+      <a href="#">Home</a> |
+      <a href="#">DMCA</a> |
+      <a href="#">Privacy Policy</a> |
+      <a href="#">Pasang Iklan</a> |
+      <a href="#">Novel</a>
+    </div>
+    <p>KomikKita - Tempat Baca Komik Bahasa Indonesia</p>
+  </footer>
+</body>
+</html>
