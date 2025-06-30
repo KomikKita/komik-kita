@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Detail Komik</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a href="index.html" style="margin: 20px; display: inline-block;">← Kembali ke Beranda</a>
+  <div id="detail-komik" style="padding: 20px;"></div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import {
+      getFirestore,
+      doc,
+      getDoc,
+      collection,
+      getDocs
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    // Konfigurasi Firebase
+    const firebaseConfig = {
+      apiKey: "AIZA...",
+      authDomain: "komik-kita-d3d7b.firebaseapp.com",
+      projectId: "komik-kita-d3d7b",
+      storageBucket: "komik-kita-d3d7b.appspot.com",
+      messagingSenderId: "716576061034",
+      appId: "1:71657...",
+      measurementId: "G-..."
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const params = new URLSearchParams(window.location.search);
+    const komikId = params.get("komik");
+
+    const container = document.getElementById("detail-komik");
+
+    async function loadDetail() {
+      const docRef = doc(db, "komik", komikId);
+      const docSnap = await getDoc(docRef);
+
+      if (!docSnap.exists()) {
+        container.innerHTML = "<p>Komik tidak ditemukan.</p>";
+        return;
+      }
+
+      const data = docSnap.data();
+
+      // Ambil daftar chapter
+      const chapterRef = collection(db, "komik", komikId, "chapter");
+      const chapterSnap = await getDocs(chapterRef);
+
+      const chapters = [];
+      chapterSnap.forEach(ch => {
+        chapters.push({ id: ch.id, ...ch.data() });
+      });
+
+      chapters.sort((a, b) => a.judul.localeCompare(b.judul));
+
+      // Tampilkan
+      container.innerHTML = `
+        <h1>${data.judul}</h1>
+        <img src="${data.cover}" alt="${data.judul}" style="max-width:300px;margin-bottom:20px;">
+        <p><strong>Genre:</strong> ${data.genre || "-"}</p>
+        <p><strong>Status:</strong> ${data.status || "-"}</p>
+        <p><strong>Deskripsi:</strong> ${data.deskripsi || "-"}</p>
+        <h3>Daftar Chapter:</h3>
+        <ul>
+          ${chapters.map(ch => `
+            <li><a href="baca.html?komik=${komikId}&chapter=${ch.id}">${ch.judul}</a></li>
+          `).join("")}
+        </ul>
+      `;
+    }
+
+    loadDetail();
+  </script>
+</body>
+</html>

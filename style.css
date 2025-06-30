@@ -1,0 +1,138 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+/* Header */
+.header-navbar {
+  position: relative; /* Penting untuk posisi absolut logo */
+  background-color: #3db5ff;
+  color: white;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  overflow: visible; /* Biar logo bisa 'keluar' dari header */
+}
+
+/* Floating logo container */
+.logo-container {
+  position: relative;
+  z-index: 2;
+}
+
+/* Logo Gambar PNG yang menonjol */
+.logo-img-floating {
+  position: absolute;
+  top: -55px; /* Naik ke atas header */
+  left: 0;
+  height: 150px;
+  z-index: 3;
+}
+
+/* Backup jika kamu pakai teks juga */
+.logo {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 20px;
+  color: white;
+  text-decoration: none;
+}
+
+.menu a {
+  color: white;
+  margin-left: 20px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.menu a:hover {
+  text-decoration: underline;
+}
+
+/* Navigasi Dropdown + Button */
+.nav-control {
+  background: #d7efff;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+  flex-wrap: wrap;
+}
+
+.nav-control select,
+.nav-control a {
+  padding: 8px 14px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: none;
+  background-color: #ffffff;
+  color: #333;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.nav-control a {
+  background-color: #3db5ff;
+  color: white;
+}
+
+.nav-control a:hover {
+  background-color: #1da4ff;
+}
+
+/* Judul */
+#judul-chapter {
+  margin: 20px 0;
+  text-align: center;
+}
+
+/* Area Gambar Komik */
+#gambar-komik {
+  background: #f7f4f4;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+#gambar-komik img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Footer */
+.footer-navbar {
+  background-color: #3db5ff;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  margin-top: 40px;
+}
+
+.menu-footer {
+  margin-bottom: 10px;
+}
+
+.menu-footer a {
+  color: white;
+  margin: 0 10px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.menu-footer a:hover {
+  text-decoration: underline;
+}
+
+.footer-copy {
+  font-size: 12px;
+  opacity: 0.9;
+}
